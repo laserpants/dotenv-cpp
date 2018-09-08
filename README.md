@@ -4,7 +4,7 @@
 
 Given a file `.env`
 
-```
+```bash
 # .env
 DATABASE_HOST=localhost
 DATABASE_USERNAME=user
