@@ -9,7 +9,7 @@
 class dotenv
 {
 public:
-    const static unsigned char DontOverwrite = 1 << 0;
+    static const unsigned char DontOverwrite = 1 << 0;
 
     static const int OptionsNone = 0;
 
