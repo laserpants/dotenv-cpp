@@ -45,13 +45,13 @@ std::cout << std::getenv("DATABASE_USERNAME") << std::endl;
 std::cout << std::getenv("DATABASE_PASSWORD") << std::endl;
 ```
 
-Updating the previous example and running the program again, setting the `DATABASE_USERNAME` variable, e.g. as
+Updating the previous example and running the program again, first setting the `DATABASE_USERNAME` variable, e.g. as
 
 ```
 DATABASE_USERNAME=root ./main
 ```
 
-the output is this time:
+the output this time is:
 
 ```
 root
