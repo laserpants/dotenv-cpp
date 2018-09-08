@@ -5,7 +5,6 @@
 Given a file `.env`
 
 ```shell
-# .env
 DATABASE_HOST=localhost
 DATABASE_USERNAME=user
 DATABASE_PASSWORD="antipasto"
