@@ -9,9 +9,8 @@
 class dotenv
 {
 public:
-    const static unsigned char Overwrite = 1 << 0;
+    const static unsigned char DontOverwrite = 1 << 0;
 
-    static const int OptionsDefault = Overwrite;
     static const int OptionsNone = 0;
 
     static void init(const char* filename = ".env");
@@ -24,7 +23,7 @@ private:
 
 void dotenv::init(const char* filename)
 {
-    dotenv::do_init(OptionsDefault, filename);
+    dotenv::do_init(OptionsNone, filename);
 }
 
 void dotenv::init(int flags, const char* filename)
@@ -55,7 +54,7 @@ void dotenv::do_init(int flags, const char* filename)
                 const auto pos = line.find("=");
                 const auto name = line.substr(0, pos);
                 const auto val = strip_quotes(line.substr(pos + 1));
-                setenv(name.c_str(), val.c_str(), flags & dotenv::Overwrite);
+                setenv(name.c_str(), val.c_str(), ~flags & dotenv::DontOverwrite);
             }
 
             ++i;

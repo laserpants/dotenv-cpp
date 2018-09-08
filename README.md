@@ -33,3 +33,27 @@ the output is:
 user
 antipasto
 ```
+
+### Options
+
+By default, if a name is already present in the environment, `dotenv::init()` will replace it with the new value. To preserve existing variables, set the `DontOverwrite` flag.
+
+```cpp
+dotenv::init(dotenv::DontOverwrite);
+
+std::cout << std::getenv("DATABASE_USERNAME") << std::endl;
+std::cout << std::getenv("DATABASE_PASSWORD") << std::endl;
+```
+
+Running the example program again, first setting the `DATABASE_USERNAME` variable, e.g., as
+
+```
+DATABASE_USERNAME=root ./main
+```
+
+the output is this time:
+
+```
+root
+antipasto
+```
