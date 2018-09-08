@@ -11,7 +11,8 @@ class dotenv
 public:
     const static unsigned char Overwrite = 1 << 0;
 
-    static const int DefaultOptions = Overwrite;
+    static const int OptionsDefault = Overwrite;
+    static const int OptionsNone = 0;
 
     static void init(const char* filename = ".env");
     static void init(int flags, const char* filename = ".env");
@@ -23,7 +24,7 @@ private:
 
 void dotenv::init(const char* filename)
 {
-    dotenv::do_init(DefaultOptions, filename);
+    dotenv::do_init(OptionsDefault, filename);
 }
 
 void dotenv::init(int flags, const char* filename)
@@ -40,15 +41,15 @@ void dotenv::do_init(int flags, const char* filename)
 
     file.open(filename);
 
-    if (file) 
+    if (file)
     {
         unsigned int i = 1;
 
         while (getline(file, line))
         {
             if (!std::regex_match(line, pattern)) {
-                std::cout << "dotenv: Ignoring ill-formed assignment in line " 
-                          << i << ": '" 
+                std::cout << "dotenv: Ignoring ill-formed assignment on line "
+                          << i << ": '"
                           << line << "'" << std::endl;
             } else {
                 const auto pos = line.find("=");
@@ -72,7 +73,7 @@ std::string dotenv::strip_quotes(const std::string& str)
     const char first = str[0];
     const char last = str[len - 1];
 
-    if (first == last && ('"' == first || '\'' == first))  
+    if (first == last && ('"' == first || '\'' == first))
         return str.substr(1, len - 2);
 
     return str;
