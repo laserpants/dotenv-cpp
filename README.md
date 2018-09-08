@@ -14,7 +14,7 @@ and a program
 
 ```cpp
 #include <iostream>
-#include "dotenv.h"
+#include "dotenv/dotenv.h"
 
 int main()
 {
