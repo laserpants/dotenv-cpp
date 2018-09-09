@@ -10,9 +10,10 @@ DATABASE_USERNAME=user
 DATABASE_PASSWORD="antipasto"
 ```
 
-and a program
+and a program `example.cpp`
 
 ```cpp
+// example.cpp
 #include <iostream>
 #include "dotenv/dotenv.h"
 
@@ -25,6 +26,10 @@ int main()
 
     return 0;
 }
+```
+
+```bash
+cpp example.cpp -o example --std=c++11
 ```
 
 the output is:
@@ -45,10 +50,10 @@ std::cout << std::getenv("DATABASE_USERNAME") << std::endl;
 std::cout << std::getenv("DATABASE_PASSWORD") << std::endl;
 ```
 
-Updating the previous example and running the program again, after setting the `DATABASE_USERNAME` variable, e.g. as
+Updating the previous example, recompiling and running the program again, after setting the `DATABASE_USERNAME` variable, e.g. as
 
 ```
-DATABASE_USERNAME=root ./main
+DATABASE_USERNAME=root ./example
 ```
 
 the output this time is:
