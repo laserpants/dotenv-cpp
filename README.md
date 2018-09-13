@@ -41,10 +41,10 @@ antipasto
 
 ### Default values
 
-`dotenv::getenv()` is a wrapper for `std::getenv()` but also takes a default value, in case the variable is empty:
+`dotenv::getenv()` is a wrapper for `std::getenv()` that also takes a default value, in case the variable is empty:
 
 ```cpp
-    std::cout << dotenv::getenv("DATABASE_USERNAME", "anonymous") << std::endl;
+std::cout << dotenv::getenv("DATABASE_USERNAME", "anonymous") << std::endl;
 ```
 
 ### Options
