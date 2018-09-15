@@ -29,7 +29,7 @@ int main()
 ```
 
 ```bash
-cpp example.cpp -o example
+cpp example.cpp -o example && ./example
 ```
 
 the output is:
