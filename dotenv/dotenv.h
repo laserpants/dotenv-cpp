@@ -14,7 +14,7 @@ public:
     static void init(const char* filename = ".env");
     static void init(int flags, const char* filename = ".env");
 
-    static std::string getenv(const char* name, const std::string def = "");
+    static std::string getenv(const char* name, const std::string& def = "");
 
 private:
     static void do_init(int flags, const char* filename);
@@ -31,7 +31,7 @@ void dotenv::init(int flags, const char* filename)
     dotenv::do_init(flags, filename);
 }
 
-std::string dotenv::getenv(const char* name, const std::string def)
+std::string dotenv::getenv(const char* name, const std::string& def)
 {
     const char* str = std::getenv(name);
     return str ? std::string(str) : def;
