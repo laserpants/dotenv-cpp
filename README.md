@@ -39,6 +39,14 @@ user
 antipasto
 ```
 
+### Default values
+
+`dotenv::getenv()` is a wrapper for `std::getenv()` that also takes a default value, in case the variable is empty:
+
+```cpp
+std::cout << dotenv::getenv("DATABASE_USERNAME", "anonymous") << std::endl;
+```
+
 ### Options
 
 By default, if a name is already present in the environment, `dotenv::init()` will replace it with the new value. To preserve existing variables, you must pass the `DontOverwrite` flag.
