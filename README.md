@@ -29,7 +29,7 @@ int main()
 ```
 
 ```bash
-cpp example.cpp -o example --std=c++11
+cpp example.cpp -o example
 ```
 
 the output is:
