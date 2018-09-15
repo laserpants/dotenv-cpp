@@ -44,7 +44,7 @@ void dotenv::do_init(int flags, const char* filename)
     std::ifstream file;
     std::string line;
 
-    const std::regex pattern("[a-zA-Z_][a-zA-Z0-9_]*=.*");
+    const std::regex pattern{"[a-zA-Z_][a-zA-Z0-9_]*=.*", std::regex_constants::basic};
 
     file.open(filename);
 
