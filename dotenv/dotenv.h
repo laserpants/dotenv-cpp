@@ -1,10 +1,8 @@
 #pragma once
 
-#include <cassert>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include <regex>
 
 class dotenv
 {
@@ -44,8 +42,6 @@ void dotenv::do_init(int flags, const char* filename)
     std::ifstream file;
     std::string line;
 
-    const std::regex pattern{"[a-zA-Z_][a-zA-Z0-9_]*=.*", std::regex_constants::basic};
-
     file.open(filename);
 
     if (file)
@@ -54,17 +50,16 @@ void dotenv::do_init(int flags, const char* filename)
 
         while (getline(file, line))
         {
-            if (!std::regex_match(line, pattern)) {
+            const auto pos = line.find("=");
+
+            if (pos == std::string::npos) {
                 std::cout << "dotenv: Ignoring ill-formed assignment on line "
-                          << i << ": '"
-                          << line << "'" << std::endl;
+                          << i << ": '" << line << "'" << std::endl;
             } else {
-                const auto pos = line.find("=");
                 const auto name = line.substr(0, pos);
                 const auto val = strip_quotes(line.substr(pos + 1));
                 setenv(name.c_str(), val.c_str(), ~flags & dotenv::DontOverwrite);
             }
-
             ++i;
         }
     }
