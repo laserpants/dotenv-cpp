@@ -2,9 +2,15 @@ cmake_minimum_required(VERSION 3.2)
 
 project(dotenv VERSION 0.9.0 LANGUAGES CXX)
 
-set(default_build_type "Release")
 if(EXISTS "${CMAKE_SOURCE_DIR}/.git") 
     set(default_build_type "Debug")
+else()
+    set(default_build_type "Release")
+endif()
+
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    message(STATUS "Setting build type to ${default_build_type}.")
+    set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE FORCE)
 endif()
 
 configure_file(
