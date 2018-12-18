@@ -5,7 +5,7 @@ project(dotenv VERSION 0.9.0 LANGUAGES CXX)
 set(default_build_type "Release")
 if(EXISTS "${CMAKE_SOURCE_DIR}/.git") 
     set(default_build_type "Debug")
-else()
+endif()
 
 configure_file(
     "${PROJECT_SOURCE_DIR}/src/dotenv-config.h.in"
