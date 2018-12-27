@@ -1,6 +1,53 @@
 # dotenv-cpp
 
-## Example
+## Installation
+
+The library is header-only, so there is nothing to build. You could simply merge the `include` directory into your project root, entering something like 
+
+```bash
+mkdir -p include
+cp -r <path-to-this-repo>/dotenv-cpp/include/ .
+```
+
+and compile, adding `-I include/laserpants/dotenv` to your build command, which then allows you to `#include "dotenv.h"`.
+
+Although the above method is sufficient for many use cases; for proper CMake support, you should install the library using a sequence of command such as
+
+```bash
+mkdir -p build
+cd build
+cmake ..
+make
+sudo make install
+```
+
+By default, the headers will then be installed to `include/laserpants/dotenv-<VERSION>/`, relative to the CMake install prefix (`/usr/local/` on Linux/Unix). To compile *without* CMake, you can then use a flag
+
+```
+-I /usr/local/include/laserpants/dotenv-<VERSION>
+```
+
+For CMake-based projects, your project's `CMakeLists.txt` file could look something like the following:
+
+```cmake
+cmake_minimum_required(VERSION 3.2)
+project(test)
+
+find_package(laserpants_dotenv)
+
+add_executable(example example.cpp)
+target_link_libraries(example laserpants::dotenv)
+```
+
+Then, in `example.cpp`, just
+
+```cpp
+#include <dotenv.h>
+```
+
+## Useage
+
+### Example
 
 Given a file `.env`
 
@@ -15,7 +62,7 @@ and a program `example.cpp`
 ```cpp
 // example.cpp
 #include <iostream>
-#include "dotenv.h"
+#include <dotenv.h>
 
 int main()
 {
@@ -28,49 +75,11 @@ int main()
 }
 ```
 
-assuming you have merged the contents of `include/` into your project root (e.g., `cp -r dotenv-cpp/include .`),
-
-```bash
-cpp example.cpp -o example -I include/laserpants/dotenv/ && ./example
-```
-
 the output is:
 
 ```
 user
 antipasto
-```
-
-### Installation
-
-The library is header-only, so there is nothing to build. Although the above method of copying `include` into your source tree is sufficient for many use cases, for proper CMake support, you can install the library using, e.g.,
-
-```bash
-mkdir -p build
-cd build
-cmake ..
-make
-sudo make install
-```
-
-By default, the headers will then be installed to `include/laserpants/dotenv-<VERSION>/`, relative to the CMake install prefix (`/usr/local/` on Linux/Unix). To compile the example program without CMake, you should therefore use, e.g., `cpp example.cpp -o example -I/usr/local/include/laserpants/dotenv-<VERSION>/`.
-
-For CMake-based projects, your project's `CMakeLists.txt` file could look something like the following:
-
-```cmake
-cmake_minimum_required(VERSION 3.2)
-project(test)
-
-find_package(laserpants_dotenv)
-
-add_executable(example example.cpp)
-target_link_libraries(example laserpants::dotenv)
-```
-
-Then, in `example.cpp`:
-
-```cpp
-#include <dotenv.h>
 ```
 
 ### Default values
