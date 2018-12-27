@@ -41,7 +41,7 @@ user
 antipasto
 ```
 
-For a CMake-based approach, see [below](#CMake). Using the default settings, the headers will be installed to `install/laserpants/dotenv-<VERSION>`, relative to the CMake install prefix (`/usr/local` on Linux/Unix).
+For CMake-based projects, see [below](#CMake). Using the default settings, the headers will be installed to `include/laserpants/dotenv-<VERSION>`, relative to the CMake install prefix (`/usr/local` on Linux/Unix). To compile the example program without using CMake, you should then use, e.g., `cpp example.cpp -o example -I/usr/local/include/laserpants/dotenv-<VERSION>/`.
 
 ### Default values
 
