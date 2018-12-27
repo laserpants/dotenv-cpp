@@ -41,6 +41,8 @@ user
 antipasto
 ```
 
+For a CMake-based approach, see [below](CMake).
+
 ### Default values
 
 `dotenv::getenv()` is a wrapper for `std::getenv()` that also takes a default value, in case the variable is empty:
