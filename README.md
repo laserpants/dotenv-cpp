@@ -41,7 +41,7 @@ user
 antipasto
 ```
 
-For a CMake-based approach, see [below](#CMake).
+For a CMake-based approach, see [below](#CMake). Using the default settings, the headers will be installed to `install/laserpants/dotenv-<VERSION>`, relative to the CMake install prefix (`/usr/local` on Linux/Unix).
 
 ### Default values
 
