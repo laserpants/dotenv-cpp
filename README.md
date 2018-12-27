@@ -41,7 +41,37 @@ user
 antipasto
 ```
 
-For CMake-based projects, see [below](#CMake). Using the default settings, the headers will be installed to `include/laserpants/dotenv-<VERSION>`, relative to the CMake install prefix (`/usr/local` on Linux/Unix). To compile the example program without using CMake, you should then use, e.g., `cpp example.cpp -o example -I/usr/local/include/laserpants/dotenv-<VERSION>/`.
+### Installation
+
+The library is header-only, so there is nothing to build. Although the above method of copying `include` into your source tree is sufficient for many use-cases, for proper CMake support, you can install the library using, e.g.,
+
+```bash
+mkdir -p build
+cd build
+cmake ..
+make
+sudo make install
+```
+
+By default, the headers will then be installed to `include/laserpants/dotenv-<VERSION>/`, relative to the CMake install prefix (`/usr/local/` on Linux/Unix). To compile the example program without CMake, you should use, e.g., `cpp example.cpp -o example -I/usr/local/include/laserpants/dotenv-<VERSION>/`.
+
+For CMake-based projects, your project's `CMakeLists.txt` file could look something like the following:
+
+```cmake
+cmake_minimum_required(VERSION 3.2)
+project(test)
+
+find_package(laserpants_dotenv)
+
+add_executable(example example.cpp)
+target_link_libraries(example laserpants::dotenv)
+```
+
+Then, in `example.cpp`:
+
+```cpp
+#include <dotenv.h>
+```
 
 ### Default values
 
@@ -73,34 +103,4 @@ the output this time is:
 ```
 root
 antipasto
-```
-
-## CMake
-
-Example of installing and subsequently using this library in a CMake-based project:
-
-```bash
-mkdir -p build
-cd build
-cmake ..
-make
-sudo make install
-```
-
-Your project's `CMakeLists.txt` file could then look something like the following:
-
-```cmake
-cmake_minimum_required(VERSION 3.2)
-project(test)
-
-find_package(laserpants_dotenv)
-
-add_executable(example example.cpp)
-target_link_libraries(example laserpants::dotenv)
-```
-
-Then, in `example.cpp`:
-
-```cpp
-#include <dotenv.h>
 ```
