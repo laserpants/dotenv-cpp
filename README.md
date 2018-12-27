@@ -98,3 +98,9 @@ find_package(laserpants_dotenv)
 add_executable(example example.cpp)
 target_link_libraries(example laserpants::dotenv)
 ```
+
+Then, in `example.cpp`:
+
+```cpp
+#include <dotenv.h>
+```
