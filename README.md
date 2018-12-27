@@ -15,7 +15,7 @@ and a program `example.cpp`
 ```cpp
 // example.cpp
 #include <iostream>
-#include "dotenv/dotenv.h"
+#include "dotenv.h"
 
 int main()
 {
@@ -28,8 +28,10 @@ int main()
 }
 ```
 
+assuming you have merged the contents of `include/` into your project root (e.g., `cp -r dotenv-cpp/include .`),
+
 ```bash
-cpp example.cpp -o example && ./example
+cpp example.cpp -o example -I include/laserpants/dotenv/ && ./example
 ```
 
 the output is:
@@ -76,7 +78,7 @@ antipasto
 Example of installing and subsequently using this library in a CMake-based project:
 
 ```bash
-mkdir build # if not exists
+mkdir -p build
 cd build
 cmake ..
 make
@@ -91,6 +93,6 @@ project(test)
 
 find_package(laserpants_dotenv)
 
-add_executable(main main.cpp)
-target_link_libraries(main laserpants::dotenv)
+add_executable(example example.cpp)
+target_link_libraries(example laserpants::dotenv)
 ```
