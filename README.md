@@ -70,3 +70,27 @@ the output this time is:
 root
 antipasto
 ```
+
+## CMake
+
+Example of installing and subsequently using this library in a CMake-based project:
+
+```bash
+mkdir build # if not exists
+cd build
+cmake ..
+make
+sudo make install
+```
+
+Your project's `CMakeLists.txt` file could then look something like the following:
+
+```cmake
+cmake_minimum_required(VERSION 3.2)
+project(test)
+
+find_package(laserpants_dotenv)
+
+add_executable(main main.cpp)
+target_link_libraries(main laserpants::dotenv)
+```

@@ -1,0 +1,3 @@
+#define DOTENV_VERSION_MAJOR @laserpants_dotenv_VERSION_MAJOR@
+#define DOTENV_VERSION_MINOR @laserpants_dotenv_VERSION_MINOR@
+#define DOTENV_VERSION_PATCH @laserpants_dotenv_VERSION_PATCH@
