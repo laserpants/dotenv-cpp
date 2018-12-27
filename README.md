@@ -41,7 +41,7 @@ user
 antipasto
 ```
 
-For a CMake-based approach, see [below](CMake).
+For a CMake-based approach, see [below](#CMake).
 
 ### Default values
 
