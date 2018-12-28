@@ -39,13 +39,19 @@
 #include <iostream>
 
 ///
-/// Utility class for loading environment variables from a `.env` file.
+/// Utility class for loading environment variables from a file.
+///
+/// ### Typical use
+///
+/// Given a file `.env`
 ///
 /// \code
 /// DATABASE_HOST=localhost
 /// DATABASE_USERNAME=user
 /// DATABASE_PASSWORD="antipasto"
 /// \endcode
+///
+/// and a program `example.cpp`
 ///
 /// \code
 /// // example.cpp

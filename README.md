@@ -95,10 +95,10 @@ std::cout << dotenv::getenv("DATABASE_USERNAME", "anonymous") << std::endl;
 
 ### Options
 
-By default, if a name is already present in the environment, `dotenv::init()` will replace it with the new value. To preserve existing variables, you must pass the `DontOverwrite` flag.
+By default, if a name is already present in the environment, `dotenv::init()` will replace it with the new value. To preserve existing variables, you must pass the `Preserve` flag.
 
 ```cpp
-dotenv::init(dotenv::DontOverwrite);
+dotenv::init(dotenv::Preserve);
 
 std::cout << std::getenv("DATABASE_USERNAME") << std::endl;
 std::cout << std::getenv("DATABASE_PASSWORD") << std::endl;
