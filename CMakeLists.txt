@@ -4,6 +4,24 @@ project(laserpants_dotenv VERSION 0.9.0 LANGUAGES CXX)
 
 set(DOTENV_CONFIG_INSTALL_DIR "lib/cmake/${PROJECT_NAME}")
 
+option(BUILD_DOCS "Build documentation" ON)
+
+find_package(Doxygen)
+
+if(DOXYGEN_FOUND)
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
+        @ONLY)
+    add_custom_target(doxygen ALL
+        COMMAND ${DOXYGEN_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating Doxygen documentation"
+        VERBATIM)
+else(DOXYGEN_FOUND)
+    message("Doxygen needs to be installed to generate documentation")
+endif(DOXYGEN_FOUND)
+
 if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
     set(DEFAULT_BUILD_TYPE "Debug")
 else()
