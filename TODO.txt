@@ -1,2 +1,0 @@
-- Add Doxygen to CMake config
-- Tests
