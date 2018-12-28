@@ -28,6 +28,8 @@ By default, the headers will then be installed to `include/laserpants/dotenv-<VE
 -I /usr/local/include/laserpants/dotenv-<VERSION>
 ```
 
+or the equivalent path on other platforms. 
+
 For CMake-based projects, your project's `CMakeLists.txt` file could look something like the following:
 
 ```cmake
