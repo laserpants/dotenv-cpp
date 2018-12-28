@@ -50,7 +50,7 @@
 /// \code
 /// // example.cpp
 /// #include <iostream>
-/// #include "dotenv/dotenv.h"
+/// #include <dotenv.h>
 ///
 /// int main()
 /// {
@@ -66,7 +66,7 @@
 /// Compile and run the program, e.g. using,
 ///
 /// \code
-/// c++ example.cpp -o example && ./example
+/// c++ example.cpp -o example -I/usr/local/include/laserpants/dotenv-0.9.0 && ./example
 /// \endcode
 ///
 /// and the output is:
