@@ -14,6 +14,7 @@ and compile, adding `-I include/laserpants/dotenv` to your build command, which 
 Although the above method is sufficient for many use cases; for proper CMake support, you should install the library using a sequence of command such as
 
 ```bash
+cd <path-to-this-repo>
 mkdir -p build
 cd build
 cmake ..
