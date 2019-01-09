@@ -6,7 +6,7 @@ The library is header-only, so there is nothing to build. You could simply merge
 
 ```bash
 mkdir -p include
-cp -r <path-to-this-repo>/dotenv-cpp/include/ .
+cp -rn <path-to-this-repo>/dotenv-cpp/include/ .
 ```
 
 and compile, adding `-I include/laserpants/dotenv` to your build command, which then allows you to `#include "dotenv.h"`.
