@@ -1,22 +1,22 @@
 // Copyright (c) 2018 Heikki Johannes Hildén <hildenjohannes@gmail.com>
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
-// 
+//
 //     * Redistributions of source code must retain the above copyright
 //       notice, this list of conditions and the following disclaimer.
-// 
+//
 //     * Redistributions in binary form must reproduce the above
 //       copyright notice, this list of conditions and the following
 //       disclaimer in the documentation and/or other materials provided
 //       with the distribution.
-// 
+//
 //     * Neither the name of copyright holder nor the names of other
 //       contributors may be used to endorse or promote products derived
 //       from this software without specific prior written permission.
-// 
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -150,6 +150,22 @@ inline std::string dotenv::getenv(const char* name, const std::string& def)
     const char* str = std::getenv(name);
     return str ? std::string(str) : def;
 }
+
+#ifdef _MSC_VER
+
+// https://stackoverflow.com/questions/17258029/c-setenv-undefined-identifier-in-visual-studio
+int setenv(const char *name, const char *value, int overwrite)
+{
+    int errcode = 0;
+    if(!overwrite) {
+        size_t envsize = 0;
+        errcode = getenv_s(&envsize, NULL, 0, name);
+        if(errcode || envsize) return errcode;
+    }
+    return _putenv_s(name, value);
+}
+#endif // _MSC_VER
+
 
 inline void dotenv::do_init(int flags, const char* filename)
 {
