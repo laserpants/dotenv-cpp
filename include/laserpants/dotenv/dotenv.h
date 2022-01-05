@@ -37,6 +37,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <utility>
 
 ///
 /// Utility class for loading environment variables from a file.
@@ -102,6 +103,7 @@ public:
 private:
     static void do_init(int flags, const char* filename);
     static std::string strip_quotes(const std::string& str);
+    static std::pair<std::string,bool> expand(size_t iline, const std::string& str);
 };
 
 ///
@@ -166,6 +168,64 @@ int setenv(const char *name, const char *value, int overwrite)
 }
 #endif // _MSC_VER
 
+///
+/// Expand pre-defined variables on the form ${name} in a variable definition
+///
+/// \param iline line number in .env file
+/// \param str   the string to be expanded, containing 0 or more ${name} definitions
+/// \param ok    true on return if no variables found or all variables expanded ok
+///
+/// \returns the expanded definition when ok=true, or else str is returned unchanged
+///
+inline std::pair<std::string,bool>  dotenv::expand(size_t iline, const std::string& str)
+{
+   std::string expanded;
+
+   size_t pos = 0;
+   size_t pre_pos = pos;
+   size_t nvar = 0;
+
+   bool finished=false;
+   while(!finished) {
+
+      // look for start of variable
+      pos = str.find("${",pos);
+      if(pos != std::string::npos) {
+
+         // a variable definition detected
+         nvar++;
+         expanded += str.substr(pre_pos,pos-pre_pos);  // add substring since last variable
+         size_t p1 = pos;
+
+         // look for end of variable
+         pos = str.find('}',pos);
+         if(pos != std::string::npos) {
+
+            // end of variable found
+            std::string var = str.substr(p1,pos-p1+1);
+            if(const char* env_str = std::getenv(var.substr(2,var.length()-3).c_str())) {
+               expanded += env_str;
+               nvar--; // decrement to indicate all ok
+            }
+            else {
+               // could not expand the variable, so don't decrement
+               std::cout << "dotenv: Variable " << var << " is not defined on line " << iline << std::endl;
+            }
+            pre_pos = pos+1;
+         }
+      }
+      else {
+         // no more variables
+         finished = true;
+      }
+   }
+
+   // add trailing string after last variable
+   expanded += str.substr(pre_pos);
+
+   // nvar must be 0, or else we have an error
+   return std::make_pair(expanded,(nvar==0));
+}
 
 inline void dotenv::do_init(int flags, const char* filename)
 {
@@ -187,8 +247,21 @@ inline void dotenv::do_init(int flags, const char* filename)
                           << i << ": '" << line << "'" << std::endl;
             } else {
                 const auto name = line.substr(0, pos);
-                const auto val = strip_quotes(line.substr(pos + 1));
-                setenv(name.c_str(), val.c_str(), ~flags & dotenv::Preserve);
+                const auto line_stripped = strip_quotes(line.substr(pos + 1));
+
+                // expand any contained variables on the form ${variable} in 'line_stripped'
+                auto p = expand(i,line_stripped);
+                bool ok = p.second;
+                if(!ok) {
+                   std::cout << "dotenv: Ignoring ill-formed assignment on line "
+                   << i << ": '" << line << "'" << std::endl;
+                }
+                else {
+
+                   // variable expansion ok, set as environment variable
+                   const auto& val = p.first;
+                   setenv(name.c_str(), val.c_str(), ~flags & dotenv::Preserve);
+                }
             }
             ++i;
         }
