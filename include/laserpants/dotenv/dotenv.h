@@ -73,7 +73,7 @@
 /// Compile and run the program, e.g. using,
 ///
 /// \code
-/// c++ example.cpp -o example -I/usr/local/include/laserpants/dotenv-0.9.0 && ./example
+/// c++ example.cpp -o example -I/usr/local/include/laserpants/dotenv-0.9.1 && ./example
 /// \endcode
 ///
 /// and the output is:
@@ -159,10 +159,12 @@ inline std::string dotenv::getenv(const char* name, const std::string& def)
 int setenv(const char *name, const char *value, int overwrite)
 {
     int errcode = 0;
-    if(!overwrite) {
+    
+    if (!overwrite) 
+    {
         size_t envsize = 0;
         errcode = getenv_s(&envsize, NULL, 0, name);
-        if(errcode || envsize) return errcode;
+        if (errcode || envsize) return errcode;
     }
     return _putenv_s(name, value);
 }
