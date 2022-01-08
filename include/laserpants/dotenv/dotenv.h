@@ -37,7 +37,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include <utility>
+#include <algorithm>
 
 ///
 /// Utility class for loading environment variables from a file.
@@ -103,7 +103,14 @@ public:
 private:
     static void do_init(int flags, const char* filename);
     static std::string strip_quotes(const std::string& str);
-    static std::pair<std::string,bool> expand(size_t iline, const std::string& str);
+
+    static std::pair<std::string,bool> resolve_vars(size_t iline, const std::string& str);
+    static void  ltrim(std::string& s);
+    static void  rtrim(std::string& s);
+    static void  trim(std::string& s);
+    static std::string trim_copy(std::string s);
+    static size_t find_var_start(const std::string& str, size_t pos, std::string& start_tag);
+    static size_t find_var_end(const std::string& str, size_t pos, const std::string& start_tag);
 };
 
 ///
@@ -168,18 +175,81 @@ int setenv(const char *name, const char *value, int overwrite)
 }
 #endif // _MSC_VER
 
+
 ///
-/// Expand pre-defined variables on the form ${name} in a variable definition
+/// Look for start of variable expression in input string
+/// on the form $VARIABLE or ${VARIABLE}
+///
+/// \param str  in:  string to search in
+/// \param pos  in:  search from position
+/// \param pos  out: start tag found
+///
+/// \returns The start position of next variable expression or std::string::npos if not found
+///
+inline size_t dotenv::find_var_start(const std::string& str, size_t pos, std::string& start_tag)
+{
+   size_t p1      = str.find('$',pos);
+   size_t p2      = str.find("${",pos);
+   size_t pos_var = std::min(p1,p2);
+   if(pos_var != std::string::npos) start_tag = (pos_var == p2)? "${":"$";
+   return pos_var;
+}
+
+///
+/// Look for end of variable expression in input string
+/// on the form $VARIABLE or ${VARIABLE}
+///
+/// \param str  in:  string to search in
+/// \param pos  in:  search from position (result from find_var_start)
+/// \param pos  in:  start tag
+///
+/// \returns The next end position of variable expression or std::string::npos if not found
+///
+inline size_t dotenv::find_var_end(const std::string& str, size_t pos, const std::string& start_tag)
+{
+   char end_tag    = (start_tag == "${")? '}':' ';
+   size_t pos_end  = str.find(end_tag,pos);
+   // special case when $VARIABLE is at end of str with no trailing whitespace
+   if(pos_end == std::string::npos && end_tag==' ') pos_end = str.length();
+   return pos_end;
+}
+
+// trim whitespace from left (in place)
+inline void dotenv::ltrim(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(),
+            std::not1(std::ptr_fun<int, int>(std::isspace))));
+}
+
+// trim whitespace from right (in place)
+inline void dotenv::rtrim(std::string &s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(),
+            std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+}
+
+// trim both ends (in place)
+inline void dotenv::trim(std::string& s) {
+    ltrim(s);
+    rtrim(s);
+}
+
+// trim from both ends (copying)
+inline std::string dotenv::trim_copy(std::string s) {
+    trim(s);
+    return s;
+}
+
+///
+/// Resolve variables on the form form $VARIABLE or ${VARIABLE} in a string
 ///
 /// \param iline line number in .env file
-/// \param str   the string to be expanded, containing 0 or more ${name} definitions
-/// \param ok    true on return if no variables found or all variables expanded ok
+/// \param str   the string to be resolved, containing 0 or more variables
+/// \param ok    true on return if no variables found or all variables resolved ok
 ///
-/// \returns the expanded definition when ok=true, or else str is returned unchanged
+/// \returns pair with <resolved,true> if ok or <partial,false> if error
 ///
-inline std::pair<std::string,bool>  dotenv::expand(size_t iline, const std::string& str)
+inline std::pair<std::string,bool> dotenv::resolve_vars(size_t iline, const std::string& str)
 {
-   std::string expanded;
+   std::string resolved;
 
    size_t pos = 0;
    size_t pre_pos = pos;
@@ -188,30 +258,48 @@ inline std::pair<std::string,bool>  dotenv::expand(size_t iline, const std::stri
    bool finished=false;
    while(!finished) {
 
-      // look for start of variable
-      pos = str.find("${",pos);
+      // look for start of variable expression after pos
+      std::string start_tag;
+      pos = find_var_start(str,pos,start_tag);
       if(pos != std::string::npos) {
 
          // a variable definition detected
          nvar++;
-         expanded += str.substr(pre_pos,pos-pre_pos);  // add substring since last variable
-         size_t p1 = pos;
 
-         // look for end of variable
-         pos = str.find('}',pos);
+         // keep start of variable expression
+         size_t pos_start = pos;
+
+         size_t lstart = start_tag.length();  // length of start tag
+         size_t lend   = (lstart>1)? 1 : 0;   // length of end tag
+
+         // add substring since last variable
+         resolved += str.substr(pre_pos,pos-pre_pos);
+
+         // look for end of variable expression
+         pos = find_var_end(str,pos,start_tag);
          if(pos != std::string::npos) {
 
-            // end of variable found
-            std::string var = str.substr(p1,pos-p1+1);
-            if(const char* env_str = std::getenv(var.substr(2,var.length()-3).c_str())) {
-               expanded += env_str;
-               nvar--; // decrement to indicate all ok
+            // variable name with decoration
+            std::string var = str.substr(pos_start,pos-pos_start+1);
+
+            // variable name without decoration
+            std::string env_var = var.substr(lstart,var.length()-lstart-lend);
+
+            // remove possible whitespace at the end
+            rtrim(env_var);
+
+            // evaluate environment variable
+            if(const char* env_str = std::getenv(env_var.c_str())) {
+               resolved += env_str;
+               nvar--; // decrement to indicate variable resolved
             }
             else {
-               // could not expand the variable, so don't decrement
+               // could not resolve the variable, so don't decrement
                std::cout << "dotenv: Variable " << var << " is not defined on line " << iline << std::endl;
             }
-            pre_pos = pos+1;
+
+            // skip end tag
+            pre_pos = pos+lend;
          }
       }
       else {
@@ -220,11 +308,13 @@ inline std::pair<std::string,bool>  dotenv::expand(size_t iline, const std::stri
       }
    }
 
-   // add trailing string after last variable
-   expanded += str.substr(pre_pos);
+   // add possible trailing non-whitespace after last variable
+   if(pre_pos < str.length()) {
+      resolved += str.substr(pre_pos);
+   }
 
    // nvar must be 0, or else we have an error
-   return std::make_pair(expanded,(nvar==0));
+   return std::make_pair(resolved,(nvar==0));
 }
 
 inline void dotenv::do_init(int flags, const char* filename)
@@ -246,11 +336,11 @@ inline void dotenv::do_init(int flags, const char* filename)
                 std::cout << "dotenv: Ignoring ill-formed assignment on line "
                           << i << ": '" << line << "'" << std::endl;
             } else {
-                const auto name = line.substr(0, pos);
-                const auto line_stripped = strip_quotes(line.substr(pos + 1));
+                auto name = trim_copy(line.substr(0, pos));
+                auto line_stripped = strip_quotes(trim_copy(line.substr(pos + 1)));
 
-                // expand any contained variables on the form ${variable} in 'line_stripped'
-                auto p = expand(i,line_stripped);
+                // resolve any contained variable expressions in 'line_stripped'
+                auto p = resolve_vars(i,line_stripped);
                 bool ok = p.second;
                 if(!ok) {
                    std::cout << "dotenv: Ignoring ill-formed assignment on line "
@@ -258,7 +348,7 @@ inline void dotenv::do_init(int flags, const char* filename)
                 }
                 else {
 
-                   // variable expansion ok, set as environment variable
+                   // variable resolved ok, set as environment variable
                    const auto& val = p.first;
                    setenv(name.c_str(), val.c_str(), ~flags & dotenv::Preserve);
                 }
