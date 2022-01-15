@@ -259,13 +259,13 @@ inline std::pair<std::string,bool> dotenv::resolve_vars(size_t iline, const std:
    size_t nvar = 0;
 
    bool finished=false;
-   while(!finished) {
-
+   while(!finished)
+   {
       // look for start of variable expression after pos
       std::string start_tag;
       pos = find_var_start(str,pos,start_tag);
-      if(pos != std::string::npos) {
-
+      if(pos != std::string::npos)
+      {
          // a variable definition detected
          nvar++;
 
@@ -280,8 +280,8 @@ inline std::pair<std::string,bool> dotenv::resolve_vars(size_t iline, const std:
 
          // look for end of variable expression
          pos = find_var_end(str,pos,start_tag);
-         if(pos != std::string::npos) {
-
+         if(pos != std::string::npos)
+         {
             // variable name with decoration
             std::string var = str.substr(pos_start,pos-pos_start+1);
 
@@ -292,11 +292,13 @@ inline std::pair<std::string,bool> dotenv::resolve_vars(size_t iline, const std:
             rtrim(env_var);
 
             // evaluate environment variable
-            if(const char* env_str = std::getenv(env_var.c_str())) {
+            if(const char* env_str = std::getenv(env_var.c_str()))
+            {
                resolved += env_str;
                nvar--; // decrement to indicate variable resolved
             }
-            else {
+            else
+            {
                // could not resolve the variable, so don't decrement
                std::cout << "dotenv: Variable " << var << " is not defined on line " << iline << std::endl;
             }
@@ -312,7 +314,8 @@ inline std::pair<std::string,bool> dotenv::resolve_vars(size_t iline, const std:
    }
 
    // add possible trailing non-whitespace after last variable
-   if(pre_pos < str.length()) {
+   if(pre_pos < str.length())
+   {
       resolved += str.substr(pre_pos);
    }
 
