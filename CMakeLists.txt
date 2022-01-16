@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2)
 
-project(laserpants_dotenv VERSION 0.9.1 LANGUAGES CXX)
+project(laserpants_dotenv VERSION 0.9.2 LANGUAGES CXX)
 
 set(DOTENV_CONFIG_INSTALL_DIR "lib/cmake/${PROJECT_NAME}")
 
