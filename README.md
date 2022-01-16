@@ -95,7 +95,7 @@ std::cout << dotenv::getenv("DATABASE_USERNAME", "anonymous") << std::endl;
 
 ### Referencing other variables
 
-Variables can be referred to as ${VARIABLE} or $VARIABLE.
+Other variables can be referenced using either ${VARIABLE} or $VARIABLE.
 
 #### Example: 
 
@@ -121,14 +121,14 @@ TEMPERATURE = cold
 EXTENT      =    "  long  "
 SEASON      = '$EXTENT $TEMPERATURE winter'
 MORE        =    and $TEMPERATURE ice
-CONTAINS    = lots of ${TEMPERATURE} snow and $MORE
+CONTAINS    = lots of ${TEMPERATURE} snow $MORE
 MESSAGE     =    I wish you a ${SEASON}, with $CONTAINS
 ```
 
 the output becomes
 
 ```
-I wish you a   long   cold winter, with lots of cold snow and and cold ice
+I wish you a   long   cold winter, with lots of cold snow and cold ice
 ```
 
 ### Options
