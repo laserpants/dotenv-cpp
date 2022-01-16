@@ -166,3 +166,7 @@ antipasto
 
 ### Added
 - Add wrapper for setenv to support MSVC
+
+## 0.9.0
+
+- Initial version
