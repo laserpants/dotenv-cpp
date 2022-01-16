@@ -155,18 +155,18 @@ root
 antipasto
 ```
 
-# Changelog
+## Changelog
 
-## 0.9.2
+### 0.9.2
 
-### Added
+#### Added
 - Add support for referencing other variables in variable definitions
 
-## 0.9.1
+### 0.9.1
 
-### Added
+#### Added
 - Add wrapper for setenv to support MSVC
 
-## 0.9.0
+### 0.9.0
 
 - Initial version
