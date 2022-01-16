@@ -119,4 +119,12 @@ antipasto
 
 # Changelog
 
+## 0.9.1
 
+### Added
+- Add wrapper for setenv to support MSVC
+
+## 0.9.2
+
+### Added
+- Add support for recursive ${VARIABLE} resolution
