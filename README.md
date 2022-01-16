@@ -160,7 +160,7 @@ antipasto
 ## 0.9.2
 
 ### Added
-- Add support for recursive ${VARIABLE} resolution
+- Add support for referencing other variables in variable definitions
 
 ## 0.9.1
 
