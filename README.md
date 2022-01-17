@@ -48,7 +48,7 @@ Then, in `example.cpp`, just
 #include <dotenv.h>
 ```
 
-## Useage
+## Usage
 
 ### Example
 
