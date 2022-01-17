@@ -95,7 +95,7 @@ std::cout << dotenv::getenv("DATABASE_USERNAME", "anonymous") << std::endl;
 
 ### Referencing other variables
 
-Other variables can be referenced using either ${VARIABLE} or $VARIABLE.
+Other variables can be referenced using either `${VARIABLE}` or `$VARIABLE`.
 
 #### Example: 
 
