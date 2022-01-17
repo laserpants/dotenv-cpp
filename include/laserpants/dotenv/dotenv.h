@@ -242,15 +242,15 @@ inline std::string dotenv::trim_copy(std::string s) {
 }
 
 ///
-/// Resolve variables on the form form $VARIABLE or ${VARIABLE} in a string
+/// Resolve variables of the form $VARIABLE or ${VARIABLE} in a string
 ///
 /// \param iline line number in .env file
 /// \param str   the string to be resolved, containing 0 or more variables
 /// \param ok    true on return if no variables found or all variables resolved ok
 ///
-/// \returns pair with <resolved,true> if ok or <partial,false> if error
+/// \returns pair with <resolved, true> if ok, or <partial, false> if error
 ///
-inline std::pair<std::string,bool> dotenv::resolve_vars(size_t iline, const std::string& str)
+inline std::pair<std::string, bool> dotenv::resolve_vars(size_t iline, const std::string& str)
 {
    std::string resolved;
 
