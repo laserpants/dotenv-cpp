@@ -34,6 +34,7 @@
 ///
 #pragma once
 
+#include <string>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
@@ -218,15 +219,13 @@ inline size_t dotenv::find_var_end(const std::string& str, size_t pos, const std
 }
 
 // trim whitespace from left (in place)
-inline void dotenv::ltrim(std::string &s) {
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(),
-            std::not1(std::ptr_fun<int, int>(std::isspace))));
+inline void dotenv::ltrim(std::string& s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int c) {return !std::isspace(c); }));
 }
 
 // trim whitespace from right (in place)
-inline void dotenv::rtrim(std::string &s) {
-    s.erase(std::find_if(s.rbegin(), s.rend(),
-            std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+inline void dotenv::rtrim(std::string& s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](int c) {return !std::isspace(c); }).base(), s.end());
 }
 
 // trim both ends (in place)
