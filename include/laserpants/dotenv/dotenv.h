@@ -177,8 +177,8 @@ int setenv(const char *name, const char *value, int overwrite)
     }
     return _putenv_s(name, value);
 }
-#endif // _MSC_VER
 
+#endif // _MSC_VER
 
 ///
 /// Look for start of variable expression in input string
