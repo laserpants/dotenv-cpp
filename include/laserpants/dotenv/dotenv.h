@@ -40,6 +40,7 @@
 #include <iostream>
 #include <algorithm>
 #include <functional>
+#include <cctype>
 
 ///
 /// Utility class for loading environment variables from a file.
@@ -165,7 +166,7 @@ inline std::string dotenv::getenv(const char* name, const std::string& def)
 #ifdef _MSC_VER
 
 // https://stackoverflow.com/questions/17258029/c-setenv-undefined-identifier-in-visual-studio
-int setenv(const char *name, const char *value, int overwrite)
+inline int setenv(const char *name, const char *value, int overwrite)
 {
     int errcode = 0;
 
@@ -194,7 +195,7 @@ inline size_t dotenv::find_var_start(const std::string& str, size_t pos, std::st
 {
    size_t p1      = str.find('$',pos);
    size_t p2      = str.find("${",pos);
-   size_t pos_var = std::min(p1,p2);
+   size_t pos_var = (std::min)(p1,p2);
    if(pos_var != std::string::npos) start_tag = (pos_var == p2)? "${":"$";
    return pos_var;
 }
