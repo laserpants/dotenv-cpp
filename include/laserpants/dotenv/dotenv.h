@@ -166,7 +166,7 @@ inline std::string dotenv::getenv(const char* name, const std::string& def)
 #ifdef _MSC_VER
 
 // https://stackoverflow.com/questions/17258029/c-setenv-undefined-identifier-in-visual-studio
-int setenv(const char *name, const char *value, int overwrite)
+inline int setenv(const char *name, const char *value, int overwrite)
 {
     int errcode = 0;
 
