@@ -195,7 +195,7 @@ inline size_t dotenv::find_var_start(const std::string& str, size_t pos, std::st
 {
    size_t p1      = str.find('$',pos);
    size_t p2      = str.find("${",pos);
-   size_t pos_var = std::min(p1,p2);
+   size_t pos_var = (std::min)(p1,p2);
    if(pos_var != std::string::npos) start_tag = (pos_var == p2)? "${":"$";
    return pos_var;
 }
