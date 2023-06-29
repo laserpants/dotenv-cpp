@@ -40,6 +40,7 @@
 #include <iostream>
 #include <algorithm>
 #include <functional>
+#include <cctype>
 
 ///
 /// Utility class for loading environment variables from a file.
