@@ -76,7 +76,7 @@
 /// Compile and run the program, e.g. using,
 ///
 /// \code
-/// c++ example.cpp -o example -I/usr/local/include/laserpants/dotenv-0.9.2 && ./example
+/// c++ example.cpp -o example -I/usr/local/include/laserpants/dotenv-0.9.3 && ./example
 /// \endcode
 ///
 /// and the output is:

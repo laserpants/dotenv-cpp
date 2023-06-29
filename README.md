@@ -157,6 +157,11 @@ antipasto
 
 ## Changelog
 
+### 0.9.3
+
+#### Added
+- Add cctype header needed by std::isspace
+
 ### 0.9.2
 
 #### Added
