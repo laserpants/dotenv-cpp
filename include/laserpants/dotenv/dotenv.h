@@ -163,7 +163,7 @@ inline std::string dotenv::getenv(const char* name, const std::string& def)
     return str ? std::string(str) : def;
 }
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__MINGW32__)
 
 // https://stackoverflow.com/questions/17258029/c-setenv-undefined-identifier-in-visual-studio
 inline int setenv(const char *name, const char *value, int overwrite)
