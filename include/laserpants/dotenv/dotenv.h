@@ -336,6 +336,11 @@ inline void dotenv::do_init(int flags, const char* filename)
 
         while (getline(file, line))
         {
+            const auto len = line.length();
+            if (len == 0 || line[0] == '#') {
+                continue;
+            }
+
             const auto pos = line.find("=");
 
             if (pos == std::string::npos) {
