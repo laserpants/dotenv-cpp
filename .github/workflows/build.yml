@@ -15,8 +15,9 @@ jobs:
       - name: Build and test
         run: |
           sudo apt update
-          sudo apt install -y build-essential cmake gcc make
+          sudo apt install -y build-essential cmake gcc make doxygen
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.variant }}
+          cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.variant }} -DBUILD_TESTS=ON
           make
+          ctest
           sudo make install
