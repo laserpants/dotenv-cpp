@@ -7,6 +7,8 @@ set(DOTENV_CONFIG_INSTALL_DIR "lib/cmake/${PROJECT_NAME}")
 option(BUILD_DOCS "Build documentation" ON)
 option(BUILD_TESTS "Build tests cases" OFF)
 
+set(CMAKE_CXX_FLAGS_DEBUG "-g --coverage -fdump-ipa-inline")
+
 if(BUILD_DOCS)
     find_package(Doxygen)
 
