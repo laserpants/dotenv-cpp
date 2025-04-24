@@ -7,15 +7,16 @@ jobs:
     strategy:
       matrix:
         variant: [Debug, Release]
+
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
       - name: Build and test
         run: |
-          apt update
-          apt install -y build-essential cmake gcc make
+          sudo apt update
+          sudo apt install -y build-essential cmake gcc make
           cd build
           cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.variant }}
           make
-          make install
+          sudo make install
