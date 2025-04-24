@@ -18,7 +18,7 @@ jobs:
           sudo apt install -y build-essential cmake gcc make doxygen lcov gcovr
           cd build
           cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.variant }} -DBUILD_TESTS=ON
-          make
+          make -j4
           ctest
           sudo make install
           cd ..
