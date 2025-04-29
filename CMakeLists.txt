@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.10)
 
 project(laserpants_dotenv VERSION 0.9.3 LANGUAGES CXX)
 
