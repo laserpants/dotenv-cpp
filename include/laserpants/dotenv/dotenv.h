@@ -39,7 +39,6 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
-#include <functional>
 #include <cctype>
 
 ///
