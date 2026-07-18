@@ -167,10 +167,9 @@ inline std::string dotenv::getenv(const char* name, const std::string& def)
 // https://stackoverflow.com/questions/17258029/c-setenv-undefined-identifier-in-visual-studio
 inline int setenv(const char *name, const char *value, int overwrite)
 {
-    int errcode = 0;
-
     if (!overwrite)
     {
+        int errcode = 0;
         size_t envsize = 0;
         errcode = getenv_s(&envsize, NULL, 0, name);
         if (errcode || envsize) return errcode;
